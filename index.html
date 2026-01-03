@@ -6,24 +6,137 @@
     <title>WhatsApp Support Helper</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; background-color: #f4f4f4; }
-        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-        button { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; width: 95%; cursor: pointer; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+            overflow: hidden;
+            background-color: #000; /* Warna dasar jika gambar gagal dimuat */
+        }
+
+        /* Background Image Layer */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* GANTI URL DI BAWAH INI DENGAN LINK GAMBAR ANDA */
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.5); /* Efek Blur 50% dan agak gelap agar teks terbaca */
+            transform: scale(1.1); /* Menghilangkan garis putih di pinggir akibat blur */
+            z-index: -1;
+        }
+
+        .container { 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(10px);
+            padding: 40px 25px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        h2 { 
+            font-size: 1.6rem; 
+            margin-bottom: 25px; 
+            color: #ff6a00;
+            text-shadow: 0 0 10px rgba(255, 106, 0, 0.4);
+            font-weight: 800;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border: 1.5px solid rgba(255, 106, 0, 0.4); 
+            border-radius: 15px; 
+            font-size: 16px; 
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        input:focus {
+            border-color: #ff6a00;
+            box-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
+        }
+
+        button { 
+            background: linear-gradient(45deg, #ff6a00, #ff9d00);
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            width: 100%; 
+            cursor: pointer; 
+            font-size: 16px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(255, 106, 0, 0.4);
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #status { 
+            margin-top: 20px; 
+            font-weight: 500; 
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .credit {
+            position: absolute;
+            bottom: 30px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            z-index: 1;
+        }
+
+        .credit a {
+            color: #ff6a00;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
+<div class="bg-image"></div>
+
 <div class="container">
-    <h2>Kirim Laporan ke WhatsApp</h2>
-    <input type="tel" id="nomorWA" placeholder="Masukkan nomor telepon (contoh: +62812...)" required>
-    <button onclick="sendEmail()">Kirim Laporan</button>
+    <h2>FIX MERAH</h2>
+    <input type="tel" id="nomorWA" placeholder="Nomor Telepon (+62812...)" required>
+    <button onclick="sendEmail()">KIRIM LAPORAN</button>
     <p id="status"></p>
+</div>
+
+<div class="credit">
+    © Developed by zd. | <a href="https://t.me/t0pnumber" target="_blank">t.me/t0pnumber</a>
 </div>
 
 <script type="text/javascript">
     (function() {
-        // GANTI DENGAN PUBLIC KEY EMAILJS ANDA
         emailjs.init("4gczUaVphaqhbQuJP"); 
     })();
 
@@ -36,21 +149,21 @@
             return;
         }
 
-        status.innerText = "Sedang mengirim...";
+        status.style.color = "white";
+        status.innerText = "Processing...";
 
         const templateParams = {
             to_email: "support@support.whatsapp.com",
             nomor: nomor,
-            message: `¡Hola, administradores de WhatsApp! Me presento. Me llamo valleria. Les escribo por un problema. Tengo problemas para registrar mi número de WhatsApp y cada vez que intento iniciar sesión, me aparece el mensaje "No se puede iniciar sesión". Me gustaría poder iniciar sesión con este número ${nomor} sin que me aparezca el error "No se puede iniciar sesión". Gracias por usar WhatsApp.`
+            message: `Halo administrator WhatsApp! Nama saya Valleria. Saya menulis karena saya memiliki masalah. Saya mengalami kesulitan mendaftarkan nomor WhatsApp saya, dan setiap kali saya mencoba masuk, saya mendapatkan pesan "Tidak dapat masuk." Saya ingin dapat masuk dengan nomor ini, ${nomor}, tanpa mendapatkan kesalahan "Tidak dapat masuk". Terima kasih telah menggunakan WhatsApp.`
         };
 
-        // GANTI SERVICE_ID DAN TEMPLATE_ID SESUAI AKUN ANDA
         emailjs.send('service_u6ibb5e', 'template_c7q6yhs', templateParams)
             .then(function() {
-                status.style.color = "green";
-                status.innerText = "Berhasil dikirim!";
+                status.style.color = "#00ff88"; 
+                status.innerText = "Berhasil dikirim! Tunggu 1-2 menit sebelum login kembali.";
             }, function(error) {
-                status.style.color = "red";
+                status.style.color = "#ff4d4d"; 
                 status.innerText = "Gagal: " + JSON.stringify(error);
             });
     }
@@ -58,3 +171,4 @@
 
 </body>
 </html>
+
